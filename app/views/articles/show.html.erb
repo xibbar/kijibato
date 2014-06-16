@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Group:</strong>
+  <%= @article.group %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @article.user %>
+</p>
+
+<p>
+  <strong>Host:</strong>
+  <%= @article.host %>
+</p>
+
+<p>
+  <strong>Ip:</strong>
+  <%= @article.ip %>
+</p>
+
+<p>
+  <strong>User agent:</strong>
+  <%= @article.user_agent %>
+</p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @article.title %>
+</p>
+
+<p>
+  <strong>Comment:</strong>
+  <%= @article.comment %>
+</p>
+
+<%= link_to 'Edit', edit_article_path(@article) %> |
+<%= link_to 'Back', articles_path %>

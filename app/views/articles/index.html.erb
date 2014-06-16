@@ -1,0 +1,21 @@
+<%=link_to '[投稿する]', new_article_path %>
+<%=link_to "[戻る]", articles_path%>
+
+<% for article in @articles %>
+  <hr>
+  <font color="orangered"><b><%= article.title %></b></font>&nbsp;
+  投稿者：<font color="green"><%= article.user.name %></font>
+  <%= article.created_at.strftime("%Y/%m/%d(%a) %H:%M") %>
+  [NO.<%= article.id %>]<%= link_to '[返信]', new_article_path(reply: article)%>
+  <p><%= article.comment.split(/\n/).map{|str|
+    val=string_to_link(str)
+    if val=~/^>/
+      "<font color='green'>#{val}</font>"
+    else
+      val
+    end
+  }.join("<BR>\n") %></p>
+<% end %>
+<hr>
+<%= paginate @articles%>
+<%=link_to '[お知らせメール]', new_user_path%>

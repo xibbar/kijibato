@@ -1,5 +1,34 @@
-<h1>New article</h1>
+<h1>新規投稿</h1>
 
-<%= render 'form' %>
+<%= form_for @article do |f|-%>
+  <% if @article.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@article.errors.count, "error") %> prohibited this group from being saved:</h2>
 
-<%= link_to 'Back', articles_path %>
+      <ul>
+        <% @article.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <p><label for="article_name">名前</label><br/>
+    <%= text_field 'article', 'name'  %></p>
+
+  <p><label for="article_mail">メールアドレス</label><br/>
+    <%= text_field 'article', 'mail'  %></p>
+
+  <p><label for="article_title">タイトル</label><br/>
+    <%= text_field 'article', 'title'  %></p>
+
+  <p><label for="article_comment">コメント</label><br/>
+    <%= text_area 'article', 'comment',:rows=>10 %></p>
+
+  <%= hidden_field 'article', 'ip'  %>
+  <%= hidden_field 'article', 'host'  %>
+  <%= hidden_field 'article', 'user_agent'  %>
+  <%= submit_tag "新規投稿" %>
+<% end -%>
+<hr />
+<%= link_to '戻る', articles_path %>

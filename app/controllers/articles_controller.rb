@@ -7,6 +7,11 @@ class ArticlesController < ApplicationController
     @articles = Article.where(group: @group).order('id desc').page(params[:page]).per(5)
   end
 
+  def new
+    @article = Article.find_by(group: @group, id: params[:id])
+    @article = Article.new unless @article
+  end
+
   # POST /articles
   # POST /articles.json
   def create

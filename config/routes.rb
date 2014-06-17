@@ -1,10 +1,10 @@
 Rails.application.routes.draw do
-  resources :users
 
   get '/:initial' => 'articles#index'
 
   scope '/:initial' do
     resources :articles, except: [:edit, :update, :destroy]
+    resources :users
   end
 
   namespace :setup do

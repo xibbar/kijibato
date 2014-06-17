@@ -1,5 +1,6 @@
 class ArticlesController < ApplicationController
   before_action :set_group
+  before_action :set_user, except: :login
 
   # GET /articles
   # GET /articles.json
@@ -7,37 +8,71 @@ class ArticlesController < ApplicationController
     @articles = Article.where(group: @group).order('id desc').page(params[:page]).per(5)
   end
 
+  def login
+    default_url_options[:email] = nil
+    if request.method=='POST'
+      @user=User.find_by(group_id: @group.id, email: params[:email])
+      redirect_to articles_path(email: params[:email]) if @user
+    end
+  end
+
   def new
     @article = Article.find_by(group: @group, id: params[:id])
+    if @article
+      @article.comment=@article.comment.split(/\n/).map{|val|
+        "> "+val
+      }.join("\n")+"\n"
+      @article.title="Re: "+@article.title
+      @article.title.gsub!(/^(Re:\s{0,1}){2,}(.*)/){"Re:Re: #{$2}"}
+    end
+
     @article = Article.new unless @article
+    @article.name = @user.name
   end
 
   # POST /articles
   # POST /articles.json
   def create
     @article = Article.new(article_params)
+    @article.user = @user
+    @article.group = @group
+    @article.user_agent=request.env['HTTP_USER_AGENT']
+    @article.host=request.env['REMOTE_HOST']
+    @article.ip=request.env['REMOTE_ADDR']
 
-    respond_to do |format|
-      if @article.save
-        format.html { redirect_to @article, notice: 'Article was successfully created.' }
-        format.json { render :show, status: :created, location: @article }
-      else
-        format.html { render :new }
-        format.json { render json: @article.errors, status: :unprocessable_entity }
-      end
+    if @article.save
+      redirect_to articles_path, notice: 'Article was successfully created.'
+    else
+      render :new 
     end
   end
 
   private
-    def set_group
-      @group = Group.find_by_initial(params[:initial])
+  def set_group
+    @group = Group.find_by(initial: params[:initial])
+    if @group
+      default_url_options[:initial] = @group.initial
+    else
+      default_url_options[:initial] = nil
+      default_url_options[:email] = nil
+      flash[:error] = "Invalid Group"
+      redirect_to root_path unless @group
     end
+  end
 
-    def article_params
-      params.require(:article).permit(:group_id, :user_id, :host, :ip, :user_agent, :title, :comment)
+  def set_user
+    @user=User.find_by(email: params[:email], group_id: @group.id)
+    if @user
+      default_url_options[:email] = @user.email
+    else
+      default_url_options[:email] = nil
+      flash[:error] = "Invalid User"
+      redirect_to login_articles_path unless @user
     end
+  end
 
-    def default_url_options
-      {initial: @group.initial}
-    end
+  def article_params
+    params.require(:article).permit(:group_id, :user_id, :host, :ip, :user_agent, :title, :comment, :name)
+  end
+
 end

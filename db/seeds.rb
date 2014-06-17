@@ -6,8 +6,8 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 rabbix = Group.create(initial: 'rabbix', name: 'ラビックス', email: 'fujioka@rabbix.net')
-fujioka = User.create(name: 'fujioka', email: 'fujioka@rabbix.net', group: rabbix)
+fujioka = User.create(name: '藤岡', email: 'fujioka@rabbix.net', group: rabbix)
 10.times do |n|
-  rabbix.articles << Article.new(title: "タイトル#{n}", comment: "テスト:#{n}", user: fujioka)
+  rabbix.articles << Article.new(title: "タイトル#{n}", comment: "テスト:#{n}", user: fujioka, name: '藤岡')
 end
 

@@ -3,7 +3,12 @@ Rails.application.routes.draw do
   get '/:initial' => 'articles#index'
 
   scope '/:initial' do
-    resources :articles, except: [:edit, :update, :destroy]
+    resources :articles, except: [:edit, :update, :destroy] do
+      collection do
+        get 'login'
+        post 'login'
+      end
+    end
     resources :users
   end
 
@@ -15,7 +20,7 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  # root 'welcome#index'
+  root 'welcome#index'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

@@ -1,4 +1,8 @@
-<h1>新規投稿</h1>
+<% if params[:id] -%>
+  <h1>返信投稿</h1>
+<% else -%>
+  <h1>新規投稿</h1>
+<% end -%>
 
 <%= form_tag articles_path, method: :post do -%>
   <% if @article.errors.any? %>
@@ -25,7 +29,11 @@
   <%= hidden_field 'article', 'ip'  %>
   <%= hidden_field 'article', 'host'  %>
   <%= hidden_field 'article', 'user_agent'  %>
-  <%= submit_tag "新規投稿" %>
+  <% if params[:id] -%>
+    <%= submit_tag "返信投稿" %>
+  <% else -%>
+    <%= submit_tag "新規投稿" %>
+  <% end -%>
 <% end -%>
 <hr />
 <%= link_to '戻る', articles_path %>

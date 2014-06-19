@@ -1,4 +1,4 @@
-class Setup::GroupsController < ApplicationController
+class GroupsController < ApplicationController
   before_action :set_group, only: [:show, :edit, :update, :destroy]
 
   # GET /groups
@@ -28,7 +28,7 @@ class Setup::GroupsController < ApplicationController
 
     respond_to do |format|
       if @group.save
-        format.html { redirect_to setup_group_path(@group), notice: 'Group was successfully created.' }
+        format.html { redirect_to group_path(@group), notice: 'Group was successfully created.' }
         format.json { render :show, status: :created, location: @group }
       else
         format.html { render :new }
@@ -42,7 +42,7 @@ class Setup::GroupsController < ApplicationController
   def update
     respond_to do |format|
       if @group.update(group_params)
-        format.html { redirect_to setup_group_path(@group), notice: 'Group was successfully updated.' }
+        format.html { redirect_to group_path(@group), notice: 'Group was successfully updated.' }
         format.json { render :show, status: :ok, location: @group }
       else
         format.html { render :edit }
@@ -56,7 +56,7 @@ class Setup::GroupsController < ApplicationController
   def destroy
     @group.destroy
     respond_to do |format|
-      format.html { redirect_to setup_groups_url, notice: 'Group was successfully destroyed.' }
+      format.html { redirect_to groups_url, notice: 'Group was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

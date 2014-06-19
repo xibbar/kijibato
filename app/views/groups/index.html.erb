@@ -16,9 +16,9 @@
         <td><%= group.initial %></td>
         <td><%= group.name %></td>
         <td><%= group.email %></td>
-        <td><%= link_to 'Show', setup_group_path(group) %></td>
-        <td><%= link_to 'Edit', edit_setup_group_path(group) %></td>
-        <td><%= link_to 'Destroy', setup_group_path(group), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Show', group_path(group) %></td>
+        <td><%= link_to 'Edit', edit_group_path(group) %></td>
+        <td><%= link_to 'Destroy', group_path(group), method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
@@ -26,4 +26,4 @@
 
 <br>
 
-<%= link_to 'New Group', new_setup_group_path %>
+<%= link_to 'New Group', new_group_path %>

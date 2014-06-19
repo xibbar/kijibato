@@ -9,10 +9,10 @@ Rails.application.routes.draw do
         post 'login'
       end
     end
-    resources :users
   end
 
-  namespace :setup do
+  scope :setup do
+    resources :users
     resources :groups
   end
 

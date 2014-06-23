@@ -6,7 +6,9 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 rabbix = Group.create(initial: 'rabbix', name: 'ラビックス', email: 'fujioka@rabbix.net')
-fujioka = User.create(name: '藤岡', email: 'fujioka@rabbix.net', group: rabbix)
+fujioka = User.new(name: '藤岡', email: 'fujioka@rabbix.net', group: rabbix)
+fujioka.generate_login_key
+fujioka.save
 10.times do |n|
   rabbix.articles << Article.new(title: "タイトル#{n}", comment: "テスト:#{n}", user: fujioka, name: '藤岡')
 end

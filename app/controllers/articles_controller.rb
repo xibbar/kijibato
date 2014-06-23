@@ -13,7 +13,6 @@ class ArticlesController < ApplicationController
     default_url_options[:email] = nil
     if request.method=='POST'
       @user=User.find_by(group_id: @group.id, email: params[:email])
-      redirect_to articles_path(email: params[:email]) if @user
     end
   end
 
@@ -61,7 +60,7 @@ class ArticlesController < ApplicationController
       default_url_options[:initial] = nil
       default_url_options[:email] = nil
       flash[:error] = "Invalid Group"
-      redirect_to root_path unless @group
+      redirect_to root_path
     end
   end
 
@@ -74,7 +73,7 @@ class ArticlesController < ApplicationController
       default_url_options[:m] = nil
       default_url_options[:l] = nil
       flash[:error] = "Invalid User"
-      redirect_to login_articles_path unless @user
+      redirect_to login_articles_path
     end
   end
 
@@ -84,7 +83,7 @@ class ArticlesController < ApplicationController
       @user.generate_login_key
       Notifier.article(articles_path(email: @user.email, l: @user.login_key, only_path: false), @user.email).deliver
       flash[:notice] = "You Login key was expired. Your New Login URL was sent to your email address."
-      redirect_to login_articles_path
+      redirect_to login_articles_path(m: nil, l: nil)
     end
   end
 

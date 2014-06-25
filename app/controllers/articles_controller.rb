@@ -1,7 +1,6 @@
 class ArticlesController < ApplicationController
   before_action :set_group
-  before_action :set_user, except: :login
-  before_action :check_login_key_expire, except: :login
+  before_action :check_user, except: :login
 
   # GET /articles
   # GET /articles.json
@@ -10,9 +9,16 @@ class ArticlesController < ApplicationController
   end
 
   def login
-    default_url_options[:email] = nil
     if request.method=='POST'
       @user=User.find_by(group_id: @group.id, email: params[:email])
+      if @user
+        Notifier.login_url(articles_path(m: @user.email, l: @user.login_key, only_path: false), @user.email).deliver
+        flash[:notice] = "Login URL was sent to your email address."
+        redirect_to login_articles_path(l: nil, m: nil)
+      else
+        flash[:error] = "Invalid email address."
+        redirect_to login_articles_path(l: nil, m: nil)
+      end
     end
   end
 
@@ -43,7 +49,7 @@ class ArticlesController < ApplicationController
     if @article.save
       users = User.where(group_id: @group.id)
       users.each do |user|
-        Notifier.article(articles_path(email: user.email, l: user.login_key, only_path: false), user.email).deliver
+        Notifier.article(articles_path(m: user.email, l: user.login_key, only_path: false), user.email).deliver
       end
       redirect_to articles_path, notice: 'Article was successfully created.'
     else
@@ -64,26 +70,27 @@ class ArticlesController < ApplicationController
     end
   end
 
-  def set_user
-    @user=User.find_by(email: params[:m], login_key: params[:l], group_id: @group.id)
-    if @user
-      default_url_options[:m] = @user.email
-      default_url_options[:l] = @user.login_key
+  def check_user
+    @user=User.find_by(email: params[:m], group_id: @group.id)
+    if @user # ユーザーがいなかったらログイン画面へリダイレクト
+      if @user.login_key == params[:l] # ログインキーがあっているか
+        if @user.key_expire_at < Time.now
+          @user.generate_login_key
+          Notifier.login_url(articles_path(m: @user.email, l: @user.login_key, only_path: false), @user.email).deliver
+          flash[:notice] = "You Login key was expired. New Login URL was sent to your email address."
+          redirect_to login_articles_path(l: nil, m: nil)
+        else
+          default_url_options[:m]=@user.email
+          default_url_options[:l]=@user.login_key
+        end
+      else
+        Notifier.login_url(articles_path(m: @user.email, l: @user.login_key, only_path: false), @user.email).deliver
+        flash[:notice] = "Login URL was sent to your email address."
+        redirect_to login_articles_path(l: nil, m: nil)
+      end
     else
-      default_url_options[:m] = nil
-      default_url_options[:l] = nil
       flash[:error] = "Invalid User"
-      redirect_to login_articles_path
-    end
-  end
-
-  def check_login_key_expire
-    now = Time.now
-    if @user.key_expire_at < now
-      @user.generate_login_key
-      Notifier.article(articles_path(email: @user.email, l: @user.login_key, only_path: false), @user.email).deliver
-      flash[:notice] = "You Login key was expired. Your New Login URL was sent to your email address."
-      redirect_to login_articles_path(m: nil, l: nil)
+      redirect_to login_articles_path(l: nil, m: nil)
     end
   end
 

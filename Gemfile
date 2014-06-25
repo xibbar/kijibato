@@ -39,3 +39,14 @@ gem 'spring',        group: :development
 # gem 'debugger', group: [:development, :test]
 
 gem 'kaminari'
+
+group :development, :test do
+  gem 'rspec-rails'
+  gem 'database_cleaner'
+
+  gem 'guard-rspec'
+  # gem 'rb-inotify', :require => false
+  gem 'spring'
+  gem 'terminal-notifier-guard'
+  gem 'diff-lcs'
+end

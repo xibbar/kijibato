@@ -1,0 +1,15 @@
+user00:
+  id: 1
+  group_id: 1
+  name: USER1
+  email: user00@example.com
+  login_key: aabbccdd
+  key_expire_at: <%=Time.now+5.days%>
+user01:
+  id: 2
+  group_id: 1
+  name: USER2
+  email: user01@example.com
+  login_key: AABBCCDD
+  key_expire_at: <%=Time.now-5.days%>
+

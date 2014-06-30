@@ -1,8 +1,6 @@
-<p id="notice"><%= notice %></p>
-
 <p>
   <strong>Group:</strong>
-  <%= @user.group %>
+  <td><%= link_to @user.group.name, articles_path(initial: @user.group.initial), target: :blank %></td>
 </p>
 
 <p>

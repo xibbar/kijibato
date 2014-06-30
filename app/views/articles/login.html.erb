@@ -1,3 +1,7 @@
+<p>
+  <%= @group.name %> の掲示板へログインしたい場合は、登録されているメールアドレスを入力して下さい。
+  ログインURLを送信いたします。
+</p>
 <%= form_tag login_articles_path, method: :post do%>
   メールアドレス: 
   <%= text_field_tag :email %>

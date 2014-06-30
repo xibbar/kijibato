@@ -49,7 +49,7 @@ class ArticlesController < ApplicationController
     if @article.save
       users = User.where(group_id: @group.id)
       users.each do |user|
-        Notifier.article(articles_path(m: user.email, l: user.login_key, only_path: false), user.email).deliver
+        Notifier.article(articles_path(m: user.email, l: user.login_key, only_path: false,), user.email, @article).deliver
       end
       redirect_to articles_path, notice: 'Article was successfully created.'
     else
@@ -89,7 +89,11 @@ class ArticlesController < ApplicationController
         redirect_to login_articles_path(l: nil, m: nil)
       end
     else
-      flash[:error] = "Invalid User"
+      if params[:m]
+        flash[:error] = "Invalid User"
+      else
+        flash[:notice] = "Please enter member's email"
+      end
       redirect_to login_articles_path(l: nil, m: nil)
     end
   end

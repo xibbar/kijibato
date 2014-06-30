@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   before_action :authenticate
   before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :default_url_options_reset
 
   # GET /users
   # GET /users.json
@@ -71,5 +72,10 @@ class UsersController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
       params.require(:user).permit(:group_id, :name, :email)
+    end
+    def default_url_options_reset
+      default_url_options[:l]=nil
+      default_url_options[:m]=nil
+      default_url_options[:initial]=nil
     end
 end

@@ -1,5 +1,7 @@
-kijibatoに記事が投稿されました。
-
-<%= @url %>
+「<%= @article.group.name %>」の掲示板に
+「<%= @article.name %>」から記事が投稿されました。
+URL: <%= @url %>
+--
+<%= @article.comment%>
 --
 このメールはお知らせ掲示板システム「kijibato」から送信されています。

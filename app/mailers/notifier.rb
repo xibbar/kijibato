@@ -6,10 +6,11 @@ class Notifier < ActionMailer::Base
   #
   #   en.notifier.article.subject
   #
-  def article(url, to)
+  def article(url, to, article)
     @url = url
+    @article = article
 
-    mail subject: "kijibato からのお知らせ", to: to
+    mail subject: article.title, to: to
   end
   def login_url(url, to)
     @url = url

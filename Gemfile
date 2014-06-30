@@ -39,6 +39,8 @@ gem 'spring',        group: :development
 # gem 'debugger', group: [:development, :test]
 
 gem 'kaminari'
+gem 'jpmobile'
+gem 'rdiscount'
 
 group :development, :test do
   gem 'rspec-rails'

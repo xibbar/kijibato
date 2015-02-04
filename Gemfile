@@ -51,4 +51,8 @@ group :development, :test do
   gem 'spring'
   gem 'terminal-notifier-guard'
   gem 'diff-lcs'
+
+  gem 'capistrano-rails'
+  gem 'capistrano-passenger'
+  gem "capistrano-scm-gitcopy"
 end

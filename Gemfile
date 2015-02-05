@@ -54,6 +54,5 @@ group :development, :test do
 
   gem 'capistrano-rails'
   gem 'capistrano-passenger'
-  gem "capistrano-scm-gitcopy"
   gem 'capistrano-rbenv'
 end

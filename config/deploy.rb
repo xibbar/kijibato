@@ -2,7 +2,7 @@
 lock '3.3.5'
 
 set :application, 'kijibato'
-set :repo_url, 'git@github.com:xibbar/kijibato.git'
+set :repo_url, 'https://github.com/xibbar/kijibato.git'
 
 # Default branch is :master
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }.call
